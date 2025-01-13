@@ -1,0 +1,19 @@
+# Load required libraries
+library(DESeq2)
+
+# Example data loading
+count_matrix <- read.csv("counts.csv", row.names = 1)  # Your count matrix file
+sample_info <- read.csv("sample_info.csv")  # Metadata file with conditions
+
+# Create DESeq2 dataset
+dds <- DESeqDataSetFromMatrix(countData = count_matrix, colData = sample_info, design = ~ condition)
+
+# Run DESeq2 pipeline
+dds <- DESeq(dds)
+
+# Extract DEGs (adjust filtering thresholds as needed)
+res <- results(dds)
+deg <- res[which(res$padj < 0.05 & abs(res$log2FoldChange) > 1), ]  # Significant DEGs
+write.csv(deg, "DEGs.csv")
+
+# Tip: Check for normalization with plotCounts() or plotDispEsts() to ensure data quality.
