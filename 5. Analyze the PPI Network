@@ -1,0 +1,20 @@
+# Compute centrality metrics
+degree_centrality = nx.degree_centrality(G)
+betweenness_centrality = nx.betweenness_centrality(G)
+
+# Add metrics to the graph
+nx.set_node_attributes(G, degree_centrality, 'degree_centrality')
+nx.set_node_attributes(G, betweenness_centrality, 'betweenness_centrality')
+
+# Save centrality results
+centrality_df = pd.DataFrame({
+    'node': degree_centrality.keys(),
+    'degree_centrality': degree_centrality.values(),
+    'betweenness_centrality': betweenness_centrality.values()
+})
+centrality_df.to_csv("node_centrality.csv", index=False)
+
+# Tip: Identify hub proteins by sorting nodes by degree_centrality.
+hub_nodes = centrality_df.nlargest(10, 'degree_centrality')
+print("Top 10 hub proteins:")
+print(hub_nodes)
