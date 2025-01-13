@@ -1,0 +1,92 @@
+### **Tips and Tricks for DEG to PPI Workflow**
+
+---
+
+#### **1. Differential Expression Analysis**
+- **Normalization:** Always inspect normalization (e.g., size factors in DESeq2) with diagnostic plots like `plotCounts()` or `plotDispEsts()` to ensure data quality.
+- **Thresholds:** Adjust thresholds for significance (`padj < 0.05`) and fold change (`|log2FoldChange| > 1`) based on biological relevance.
+- **Batch Effects:** Correct for batch effects using methods like `limma::removeBatchEffect()` if applicable.
+- **Export Formats:** Save DEGs in a widely used format (CSV or TSV) with columns like `gene_symbol`, `log2FoldChange`, and `padj`.
+
+---
+
+#### **2. Gene-to-Protein Mapping**
+- **Mapping Services:** Use high-quality databases like UniProt or g:Profiler to ensure accurate mappings.
+- **Batch Queries:** Group queries to avoid API rate limits when using online mapping services.
+- **Verification:** Cross-check mapped proteins against the original DEG list to ensure no significant genes are missed.
+- **Fallback Options:** If primary mappings fail, try secondary identifiers like Ensembl IDs or RefSeq IDs.
+
+---
+
+#### **3. Retrieving PPI Data**
+- **High-Confidence Data:** Use confidence scores (e.g., STRING interaction scores > 0.7) to filter for high-quality interactions.
+- **Species-Specific Queries:** Always specify the correct organism (e.g., `species=9606` for human).
+- **Database Selection:** Combine results from multiple databases (e.g., STRING, BioGRID, IntAct) for comprehensive coverage.
+- **API Handling:** Use retries and error handling for API calls to avoid disruptions during data retrieval.
+
+---
+
+#### **4. Building the PPI Network**
+- **Self-Loops:** Remove self-loops and redundant edges to simplify the network structure.
+- **Weight Normalization:** Normalize edge weights (e.g., confidence scores) to a uniform scale for easier analysis.
+- **Graph Formats:** Save networks in standard formats like GML or GraphML for compatibility with visualization tools like Cytoscape.
+- **Visualization Layouts:** Use layouts like spring-embedded or force-directed to highlight community structures.
+
+---
+
+#### **5. Network Analysis**
+- **Hub Identification:** Sort nodes by degree centrality to identify hub proteins.
+- **Community Detection:** Apply clustering algorithms (e.g., Louvain, Leiden) to identify functional modules within the network.
+- **Sub-Networks:** Focus on subnetworks enriched in specific pathways or biological processes.
+- **Edge Filtering:** Experiment with edge filtering (e.g., retaining edges with weights above a threshold) to highlight core interactions.
+
+---
+
+#### **6. Functional Enrichment Analysis**
+- **Pathway Databases:** Use multiple enrichment databases (e.g., KEGG, Reactome, GO) to get a broader biological context.
+- **Background Genes:** Define a proper background gene list for enrichment to avoid inflated p-values.
+- **Adjust p-Values:** Apply multiple testing corrections (e.g., Benjamini-Hochberg) to control false discovery rates.
+- **Visualize Results:** Use dot plots or bar charts to display top enriched terms and their significance.
+
+---
+
+#### **7. Visualization**
+- **Node Attributes:** Use node size and color to represent metrics like degree centrality or betweenness centrality.
+- **Interactive Tools:** Use tools like Cytoscape or Pyvis to create interactive visualizations for better data exploration.
+- **Annotations:** Annotate key nodes (e.g., hubs or bottlenecks) for clarity in presentations or reports.
+- **Community Highlights:** Color-code nodes based on community detection algorithms for modular visualization.
+
+---
+
+#### **8. Workflow Optimization**
+- **Automation:** Use workflow management tools like Snakemake or Nextflow to automate repetitive tasks.
+- **Containerization:** Package your environment with Docker or Conda to ensure reproducibility across systems.
+- **Logging:** Implement logging in scripts to track progress and catch errors early.
+- **Modularity:** Break scripts into modular steps (e.g., preprocessing, network analysis) to make debugging and updates easier.
+
+---
+
+#### **9. Reproducibility and Documentation**
+- **Version Control:** Use Git to track changes in your scripts and share your project.
+- **Data Provenance:** Document the source and version of datasets (e.g., STRING version) for reproducibility.
+- **README Files:** Include clear instructions in your repository for installation, usage, and dependencies.
+- **Parameter Records:** Record all parameters (e.g., thresholds) used in the analysis for future reference.
+
+---
+
+#### **10. Advanced Extensions**
+- **Multi-Omics Integration:** Combine PPI data with transcriptomics, proteomics, or metabolomics for deeper insights.
+- **Temporal Networks:** Build dynamic PPI networks by integrating time-series data.
+- **Graph Embedding:** Use machine learning techniques like Node2Vec or graph neural networks for predictive analysis.
+- **Edge Prediction:** Explore computational methods to predict missing interactions in the PPI network.
+
+---
+
+#### **General Tips**
+- **Iterative Refinement:** Test and refine each step of the workflow before proceeding to the next.
+- **Backup Data:** Save intermediate results (e.g., filtered DEGs, PPI networks) to avoid re-running computationally intensive steps.
+- **Community Tools:** Engage with community forums or GitHub repositories for troubleshooting and updates.
+
+---
+
+This cheat sheet can be printed or saved as a reference while working on your DEG-to-PPI pipeline.
