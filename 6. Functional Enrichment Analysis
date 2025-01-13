@@ -1,0 +1,17 @@
+import gseapy as gp
+
+# Load key proteins (e.g., hubs)
+key_proteins = centrality_df.nlargest(50, 'degree_centrality')['node'].tolist()
+
+# Run GO enrichment
+enrich_res = gp.enrichr(
+    gene_list=key_proteins,
+    gene_sets=['GO_Biological_Process_2021'],
+    organism='Human'
+)
+
+# Save results
+enrich_res.results.to_csv("GO_enrichment.csv", index=False)
+
+# Tip: Visualize results using a bar plot for top GO terms:
+enrich_res.res2d.head(10).plot(kind="bar", x="Term", y="Adjusted P-value", figsize=(10, 6))
