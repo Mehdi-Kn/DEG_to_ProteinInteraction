@@ -1,6 +1,4 @@
-# DEG_to_ProteinInteraction
 
-```markdown
 # DEG2PPI: Differentially Expressed Genes to Protein-Protein Interaction Analysis
 
 ## Overview
