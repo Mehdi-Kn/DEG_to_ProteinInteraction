@@ -1,0 +1,18 @@
+import networkx as nx
+import pandas as pd
+
+# Load PPI data
+ppi_data = pd.read_csv("PPI_network.tsv", sep="\t")
+
+# Filter high-confidence interactions (adjust threshold as needed)
+ppi_data = ppi_data[ppi_data['score'] > 0.7]
+
+# Build the network
+G = nx.from_pandas_edgelist(ppi_data, 'protein1', 'protein2', edge_attr='score', create_using=nx.Graph())
+
+# Save the network
+nx.write_gml(G, "ppi_network.gml")
+
+# Tip: Visualize the degree distribution of the network to identify hubs:
+degrees = [G.degree(n) for n in G.nodes()]
+print(f"Average degree: {sum(degrees) / len(degrees):.2f}")
