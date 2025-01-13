@@ -1,0 +1,17 @@
+import requests
+
+# Load mapped DEGs
+mapped_deg = pd.read_csv("Mapped_DEGs.csv")
+protein_ids = "%0d".join(mapped_deg['uniprot_id'].tolist())
+
+# Query STRING API for PPIs
+url = f"https://string-db.org/api/tsv/network?identifiers={protein_ids}&species=9606"
+try:
+    response = requests.get(url)
+    response.raise_for_status()
+    with open("PPI_network.tsv", "w") as file:
+        file.write(response.text)
+except requests.exceptions.RequestException as e:
+    print("Error querying STRING database:", e)
+
+# Tip: Use STRING's confidence scores to filter high-quality interactions.
