@@ -1,0 +1,16 @@
+from pyvis.network import Network
+
+# Initialize Pyvis network
+net = Network(notebook=True)
+
+# Add nodes and edges
+for node, data in G.nodes(data=True):
+    net.add_node(node, title=f"Centrality: {data.get('degree_centrality', 0):.2f}")
+
+for source, target, data in G.edges(data=True):
+    net.add_edge(source, target, value=data['score'])
+
+# Save interactive network
+net.show("PPI_network.html")
+
+# Tip: Use node attributes like degree_centrality to size nodes dynamically.
